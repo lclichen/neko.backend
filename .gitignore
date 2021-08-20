@@ -1,0 +1,20 @@
+# Config files
+config.php
+Auth_Config.php
+userdata/UserInfoConfig.php
+wxacode/UserInfoConfig.php
+# Log
+*.log
+
+# VSCode settings
+.vscode
+
+# IDEA files
+.idea
+
+# OSX dir files
+.DS_Store
+
+# Sublime Text settings
+*.sublime-workspace
+*.sublime-project
