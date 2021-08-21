@@ -1,6 +1,5 @@
 <?php
 header("content-type:text/html;charset=utf-8");
-$postdata = json_encode($_POST,JSON_UNESCAPED_UNICODE); //获得POST请求提交的数据
 
 include_once "common.php";
 $data = initPostData();
@@ -34,7 +33,7 @@ if($openid){
     $row = $sth->fetch(PDO::FETCH_ASSOC);
     $result = '[';
     while($row){
-        $result .= '{"text":"' . $row['name'] . '","value":' . $row['id'] . ',"sex":"' . $row['sex'] . '","color":"' . $row['color'] . '","adopt":"' . $row['adopt'] . '","area":"' . $row['sch_area'] . '","tnr":"' . $row['TNR'] . '"}';
+        $result .= '{"name":"' . $row['name'] . '","id":' . $row['id'] . ',"sex":"' . $row['sex'] . '","color":"' . $row['color'] . '","adopt":"' . $row['adopt'] . '","area":"' . $row['sch_area'] . '","tnr":"' . $row['TNR'] . '"}';
         $row = $sth->fetch(PDO::FETCH_ASSOC);
         if($row){
             $result .= ",";

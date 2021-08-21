@@ -1,8 +1,8 @@
 # Config files
 config.php
-Auth_Config.php
-userdata/UserInfoConfig.php
-wxacode/UserInfoConfig.php
+# acode cache files
+wxacode/acode/*
+wxacode/.*
 # Log
 *.log
 
