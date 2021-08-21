@@ -189,7 +189,5 @@ function update_once($con,$tab_name,$col_update,$data_update,$col_select,$data_s
 {
     $SCondition = "UPDATE $tab_name SET $col_update = :data_update WHERE $col_select = :data_select";
     $stmt = $con->prepare($SCondition);
-    $stmt->bindParam(':data_update',$data_update);
-    $stmt->bindParam(':data_select',$data_select);
-    $stmt->execute();
+    $stmt->execute(array(':data_update'=>$data_update,':data_select'=>$data_select));
 }

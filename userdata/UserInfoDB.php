@@ -23,8 +23,8 @@ class UserInfoDB
         
         $con = pdo_database(); //连接mysql服务并选择数据库
         
-        $stmt = $con->prepare("SELECT openid FROM userinfo WHERE openid = ?");
-        $stmt->execute($openid);
+        $sth = $con->prepare("SELECT openid FROM userinfo WHERE openid = ?");
+        $sth->execute(array(':openid'=>$openid));
         $matchid = $sth->fetch(PDO::FETCH_ASSOC)['openid'];
 
         $token = sha1($openid.$data['watermark']['timestamp']);

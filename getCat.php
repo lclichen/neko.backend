@@ -7,7 +7,9 @@ $token = $data['token'];
 $con = pdo_database();
 if($token){
     [$openid,$ctrl,$nickName] = pdo_check_token($con,$token);
+    //var_dump([$token,$openid,$ctrl,$nickName]);
 }
+
 if($openid && $ctrl == 'u'){
     $ctrl = pdo_check_cat_owner($con,$openid,$id);
 }
@@ -32,9 +34,50 @@ $sth->execute(array(':id' => $id));
 
 if($result = $sth->fetch(PDO::FETCH_ASSOC)){
     $result['isAdmin']=$isA;
+
+    #get img list
+    $SCondition = "SELECT link,likeit,uploaddate,openid FROM `images` WHERE id = :id AND hide = 0";
+    $sth = $con->prepare($SCondition, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    $sth->execute(array(':id'=>$id));
+    $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+    #取最多五张图的链接
+    $len=count($rows);
+    if($len>5){
+        $rows_val = array_rand($rows,5);
+        $rows_out = [];
+        for($i = 0; $i < 5; $i ++){
+            $rows_out[$i] = $rows[$rows_val[$i]];
+        }
+    }
+    else{
+        $rows_out = $rows;
+    }
+
+    // var_dump($rows_out);
+    $len2=count($rows_out);
+    #生成返回的json数据
+    $outtext = '[';
+    $i = 0;
+    foreach($rows_out as $row){
+        if($ctrl == "s" or $openid == $row['openid']){
+            $admin = '1';
+        }
+        else{
+            $admin = '0';
+        }
+        $outtext .= '{"link":"' . $row['link'] . '","likeit":"' . $row['likeit'] . '","uploaddate":"' . $row['uploaddate'] . '","admin":' . $admin . '}';
+        $i++;
+        if($i<$len2){
+            $outtext .= ',';
+        }
+    }
+    $outtext .= ']';
+    $result['imglist']=json_decode($outtext);
+
+    #get personal rate
     if($openid){
         $sth = $con->prepare("SELECT rate FROM rates WHERE id = :id AND openid = :openid", array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':id' => $id,':openid' => $openid));
+        $sth->execute(array(':id' => $id, ':openid' => $openid));
         $result['personal_rate']=$sth->fetch(PDO::FETCH_ASSOC)['rate'];
     }
     echo json_encode($result,JSON_UNESCAPED_UNICODE);
