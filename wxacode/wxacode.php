@@ -60,7 +60,7 @@ if(is_file($filename)){
     //$resp = base64_decode(file_get_contents("./acode/$filename"));
 }
 else{
-    $Token = getAccessToken($GLOBALS['appId'],$GLOBALS['$appSecret']);
+    $Token = getAccessToken($GLOBALS['appId'],$GLOBALS['appSecret']);
 
     $resp = getUnlimitedWxacode($Token,$Scene,$Page,$Width,$Auto_color,$Line_color,$Is_hyaline);
     

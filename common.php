@@ -87,7 +87,7 @@ function http_post($url,$param,$IsJson = false){
     curl_setopt($oCurl, CURLOPT_POST,true);
     curl_setopt($oCurl, CURLOPT_POSTFIELDS,$strPOST);
     curl_setopt($oCurl, CURLOPT_VERBOSE, 1);
-    if($IsJson == true){
+    if($IsJson){
         $header = array(
             "Content-Type: application/json",
             "Content-Length: " . strlen($strPOST) . "",
