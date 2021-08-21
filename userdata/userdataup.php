@@ -15,7 +15,7 @@ else{
     $isProfile = false;
 }
 
-$Url = "https://api.weixin.qq.com/sns/jscode2session?appid=" . $appId . "&secret=" . $appSecret . "&js_code=" . $code . "&grant_type=authorization_code";
+$Url = "https://api.weixin.qq.com/sns/jscode2session?appid=" . $GLOBALS['appId'] . "&secret=" . $GLOBALS['appSecret'] . "&js_code=" . $code . "&grant_type=authorization_code";
 
 $ch = curl_init();
 // 设置URL和相应的选项
