@@ -55,5 +55,4 @@ $sth = $con->prepare($SCondition, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY)
 $sth->execute($arr);
 
 $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-var_dump($rows);
+echo json_encode($rows,JSON_UNESCAPED_UNICODE);

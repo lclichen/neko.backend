@@ -22,9 +22,9 @@ function initPostData(){ // 网络请求接收通用函数
     $content = file_get_contents('php://input');
     //print_r($content);
     $data = array_merge($data,json_decode($content, true));
-    if(empty($data)){
+    /*if(empty($data)){
         die("Empty!");
-    }
+    }*/
     return $data;
 }
 
