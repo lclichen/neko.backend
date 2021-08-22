@@ -3,8 +3,8 @@ include_once(__DIR__."/config.php");
 
 function test(){
     echo $GLOBALS['dbhost'];
-    echo $GLOBALS['dbname'];
-    die("NEKOMIMI");
+    echo "\nThat A Test Function~\n";
+    die();
 }
 
 function initPostData(){ // 网络请求接收通用函数

@@ -42,5 +42,5 @@ if ($errCode == 0) {
         echo $token;
     }
 } else {
-    print($errCode . "\n");
+    echo $errCode;
 }

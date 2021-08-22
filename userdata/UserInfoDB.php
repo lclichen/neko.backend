@@ -23,7 +23,7 @@ class UserInfoDB
         
         $con = pdo_database(); //连接mysql服务并选择数据库
         
-        $sth = $con->prepare("SELECT openid FROM userinfo WHERE openid = ?");
+        $sth = $con->prepare("SELECT openid FROM userinfo WHERE openid = :openid");
         $sth->execute(array(':openid'=>$openid));
         $matchid = $sth->fetch(PDO::FETCH_ASSOC)['openid'];
 
