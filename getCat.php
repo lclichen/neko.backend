@@ -80,6 +80,7 @@ if($result = $sth->fetch(PDO::FETCH_ASSOC)){
         $sth->execute(array(':id' => $id, ':openid' => $openid));
         $result['personal_rate']=$sth->fetch(PDO::FETCH_ASSOC)['rate'];
     }
+    $result['code']=10;
     echo json_encode($result,JSON_UNESCAPED_UNICODE);
 }
 $con=null;

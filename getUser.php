@@ -6,7 +6,7 @@ $data = initPostData();
 $token = $data['token'];
 
 $con = pdo_database();
-//echo($token);
+
 if($token){
     $sql = 'SELECT openid,admin,nickName,credit FROM `userinfo` WHERE login_token = :token';
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -24,7 +24,7 @@ if($token){
 else{
     die('{"code":1001,"msg":"Token未传入！"}');
 }
-//echo($ctrl);
+
 if($openid){
     $sql = "SELECT id,name,sex,color,TNR,adopt,sch_area,health from catsinfo WHERE openid = :openid";
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -34,7 +34,6 @@ if($openid){
     
     $redata['id'] = $rows;
     $redata['code'] = 10;
-    //echo json_encode($result,JSON_UNESCAPED_UNICODE);
     echo json_encode($redata,JSON_UNESCAPED_UNICODE);
     $con = null;
 }

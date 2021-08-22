@@ -75,11 +75,9 @@ else{//匹配不到id,新增模式,tag应为new
         $con=null;
         die('{"code":1005,"msg":"新增 '.$id.' '.$name.' 失败！"}');
     }
-    //echo "test $id | $ctrl | $openid \n";
 }
 if($openid != '' && $ctrl == 'u'){
     $ctrl = pdo_check_cat_owner($con,$openid,$name);
-    //echo "《$id $name 资讯认证成功》\n";
 }
 if(!in_array($ctrl,["s","a","o"],true)){
     die('{"code":1006,"msg":"无权限，请登录后重试。"}');

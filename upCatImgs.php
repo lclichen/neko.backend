@@ -17,7 +17,7 @@ if($token == ''){
     die('{"code":1006,"msg":"请先登录"}');
 }
 //打印日志 方便查看
-$fp = fopen('.imglog.txt','a+') or die("Unable to open file!");
+$fp = fopen(__DIR__.'/.log/imglog.txt','a+') or die('{"code":1002,"msg":"无法写入log文件"}');
 $D_T = date("Y-m-d H:i:s");
 fwrite($fp, $D_T."\n");
 fwrite($fp,$postdata."\n");
