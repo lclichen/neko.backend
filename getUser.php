@@ -26,22 +26,13 @@ else{
 }
 //echo($ctrl);
 if($openid){
-    $sql = "SELECT id,name,sex,color,TNR,adopt,sch_area from catsinfo WHERE openid = :openid";
+    $sql = "SELECT id,name,sex,color,TNR,adopt,sch_area,health from catsinfo WHERE openid = :openid";
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':openid' => $openid));
 
-    $row = $sth->fetch(PDO::FETCH_ASSOC);
-    $result = '[';
-    while($row){
-        $result .= '{"name":"' . $row['name'] . '","id":' . $row['id'] . ',"sex":"' . $row['sex'] . '","color":"' . $row['color'] . '","adopt":"' . $row['adopt'] . '","area":"' . $row['sch_area'] . '","tnr":"' . $row['TNR'] . '"}';
-        $row = $sth->fetch(PDO::FETCH_ASSOC);
-        if($row){
-            $result .= ",";
-        }
-    }
-    $result .= ']';
-    //$sth->fetchAll(PDO::FETCH_NUM);
-    $redata['id'] = json_decode($result);
+    $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+    
+    $redata['id'] = $rows;
     $redata['code'] = 10;
     //echo json_encode($result,JSON_UNESCAPED_UNICODE);
     echo json_encode($redata,JSON_UNESCAPED_UNICODE);

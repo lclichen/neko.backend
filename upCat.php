@@ -28,7 +28,9 @@ $token = $data['token'];
 if($name == '' || $uploader == ''){
     die('{"code":1001,"msg":"请输入姓名、描述及上传者。"}');
 }
-
+if($token == ''){
+    die('{"code":1006,"msg":"请先登录"}');
+}
 $postdata = json_encode($data,JSON_UNESCAPED_UNICODE); //获得POST请求提交的数据
 //打印日志 方便查看
 $fp = fopen(__DIR__.'/.log/log.txt','a+') or die('{"code":1002,"msg":"无法写入log文件"}');

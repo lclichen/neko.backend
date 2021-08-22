@@ -16,7 +16,7 @@ $tag = $data['tag'];
 
 $con = pdo_database();
 $arr = array();
-$SCondition = "SELECT id,name,sex,color,TNR,adopt,sch_area FROM `catsinfo` WHERE ";
+$SCondition = "SELECT id,name,sex,color,TNR,adopt,sch_area,health FROM `catsinfo` WHERE ";
 if(strlen($sch_area)>0 && $sch_area != 'all'){ #根据校区进行筛选
     $SCondition .= "sch_area = :sch_area AND ";
     $arr[':sch_area'] = $sch_area;
