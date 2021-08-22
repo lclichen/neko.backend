@@ -185,9 +185,9 @@ function pdo_check_voice_owner($con,$openid,$key){
     }
 }
 
-function update_once($con,$tab_name,$col_update,$data_update,$col_select,$data_select)
+function update_once($con,$tab_name,$col_update,$data_update,$col_select,$data_select,$toAppend = '')
 {
-    $SCondition = "UPDATE $tab_name SET $col_update = :data_update WHERE $col_select = :data_select";
+    $SCondition = "UPDATE $tab_name SET $col_update = :data_update WHERE $col_select = :data_select".$toAppend;
     $stmt = $con->prepare($SCondition);
     $stmt->execute(array(':data_update'=>$data_update,':data_select'=>$data_select));
 }
