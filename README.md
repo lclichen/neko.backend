@@ -1,6 +1,7 @@
 # *neko.backend*
 
 ## 此处为中国科学技术大学“科大猫咪相簿”小程序[后端代码库](https://git.ustc.edu.cn/ustcat/neko.backend)。
+<img width="100" height="100" alt="小程序码" src="https://git.ustc.edu.cn/ustcat/nekoustc/-/raw/master/wxacode.jpg"/>
 
 重构科大猫咪相簿后端，并尝试采取Git方式向服务器同步，总体来看对开发过程有很大的改善。Git天下第一！
 
