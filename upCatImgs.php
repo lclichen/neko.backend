@@ -4,6 +4,7 @@ include_once(__DIR__."/common.php");
 $data = initPostData();
 $postdata = json_encode($data,JSON_UNESCAPED_UNICODE); //获得POST请求提交的数据
 
+//$id = (int)$data['id'];
 $name = $data['name'];
 $imgname = $data['imgname'];
 $token = $data['token'];

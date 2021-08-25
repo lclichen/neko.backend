@@ -4,7 +4,7 @@ header("content-type:text/html;charset=utf-8");
 include_once(__DIR__."/common.php");
 $data = initPostData();
 $token = $data['token'];
-$id = $data['id'];
+$id = (int)$data['id'];
 $personal_rate = $data['personal_rate'];
 $action = $data['action'];
 if($id == '' || !(is_int($personal_rate) && $personal_rate <= 10 && $personal_rate >= -10)){

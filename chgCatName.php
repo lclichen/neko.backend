@@ -2,7 +2,7 @@
 header("content-type:text/html;charset=utf-8");
 include_once "common.php";
 $data = initPostData();
-$id = $data['id'];
+$id = (int)$data['id'];
 $new_name = $data['new_name'];
 $weixin_key_re = $data['pwdd'];
 
