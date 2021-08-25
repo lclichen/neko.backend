@@ -66,7 +66,7 @@ class UCloud_Auth {
         $data = '';
         $data .= strtoupper($method) . "\n";
         $data .= $content_md5 . "\n";
-        $data .=  $content_type . "\n";
+        $data .= $content_type . "\n";
         $data .= $date . "\n";
         $data .= CanonicalizedResource($bucket, $key);
 
@@ -86,9 +86,7 @@ $method=$_GET['method'];
 $bucket=$_GET['bucket'];
 $key=$_GET['key'];
 $content_md5=$_GET['content_md5'];
-//由于微信的问题，暂时去掉类型签名
-$content_type = null;
-//$content_type=$_GET['content_type'];
+$content_type=$_GET['content_type'];
 $date=$_GET['date'];
 
 $put_policy=$_GET['put_policy'];	//需要是传已经base64编码后的, 也可以在这个代码里业务固定定制一个
