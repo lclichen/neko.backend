@@ -111,7 +111,7 @@ function http_post($url,$param,$IsJson = false){
     return($sContent);
 }
 
-function sc_send($title , $text = '',$type = 'text',$touser = '2',$IsJson = false)
+function sc_send($title , $text = '',$type = 'text',$touser = '',$toparty = '',$IsJson = false)
 {
     include_once "config.php";
     $content = array(
@@ -119,7 +119,8 @@ function sc_send($title , $text = '',$type = 'text',$touser = '2',$IsJson = fals
         'title'=>$title,
         'content'=>$text,
         'key'=>$GLOBALS['weixin_key'],
-        'touser'=>$touser
+        'touser'=>$touser,
+        'toparty'=>$toparty
     );
     return $result = http_post('https://send.4c43.work/sendMsg3.php', $content, $IsJson);
 }

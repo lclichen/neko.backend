@@ -65,7 +65,7 @@ else{//匹配不到id,新增模式,tag应为new
     }
     $hide = 1;// 控制是否默认隐藏
     $id = $con->query("SELECT MAX(id) FROM catsinfo;")->fetch(PDO::FETCH_ASSOC)['MAX(id)'] + 1;
-    $sql = 'INSERT INTO catsinfo (id, name, color, hide, openid, sex, health, vac, TNR, sch_area ,adopt,adopter,description,secret,a_tel) VALUES ( :id, :name, "emp", :hide, :openid, "empty", "empty", "empty", "empty", "empty", "empty","","","","")';
+    $sql = 'INSERT INTO catsinfo (id, name, color, hide, openid, sex, health, vac, TNR, sch_area ,adopt,description,secret) VALUES ( :id, :name, "emp", :hide, :openid, "empty", "empty", "empty", "empty", "empty", "empty","","")';
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $result = $sth->execute(array(':id' => $id,':name' => $name,':hide'=>$hide,':openid'=>$openid));
     if($result){
@@ -146,6 +146,6 @@ if($openid && $openid != ''){
 if($report == ""){
     $report = "已更新 $id $name 的数据";
 }
-sc_send("通知消息-USTCAT",$nickName.' '.$report, $IsJson = true);
+sc_send("通知消息-USTCAT",$nickName.' '.$report, $toparty = '2', $IsJson = true);
 echo '{"code":10,"msg":"'.$report.'"}';
 $con=null;
