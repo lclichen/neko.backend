@@ -146,6 +146,6 @@ if($openid && $openid != ''){
 if($report == ""){
     $report = "已更新 $id $name 的数据";
 }
-sc_send("通知消息-USTCAT",$nickName.' '.$report, $toparty = '2', $IsJson = true);
+sc_send($title = "通知消息-USTCAT",$text = $nickName.' '.$report,$type = 'text',$touser = '', $toparty = '2', $IsJson = true);
 echo '{"code":10,"msg":"'.$report.'"}';
 $con=null;
