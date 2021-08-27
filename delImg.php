@@ -13,7 +13,7 @@ if($token){
     [$openid,$ctrl,$nickName] = pdo_check_token($con,$token);
 }
 //echo($ctrl);
-if($openid && $ctrl == 'u'){
+if($openid && $ctrl != 'u'){
     $ctrl = pdo_check_image_owner($con,$openid,$link);
 }
 if(($ctrl == 's' || $ctrl == 'o') && strlen($link) > 4 ){
