@@ -8,7 +8,7 @@ $token = $data['token'];
 $con = pdo_database();
 
 if($token){
-    $sql = 'SELECT openid,admin,nickName,credit FROM `userinfo` WHERE login_token = :token';
+    $sql = 'SELECT openid,admin,nickName,credit,pay_name FROM `userinfo` WHERE login_token = :token';
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':token' => $token));
     $redata = $sth->fetch(PDO::FETCH_ASSOC);

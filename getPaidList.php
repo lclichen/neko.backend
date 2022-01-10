@@ -12,7 +12,7 @@ $result = array();
 
 $result['code'] = 10;
 $result['max_i'] = 19;
-$result['date'] = "2021-7-1 ⭐!建党100周年!⭐";
+$result['date'] = "2022-1-1 ⭐新年快乐哒哟⭐";
 /*
 //需要增加一个pay_name大概，总不能日常实名上网
 $con = pdo_database();

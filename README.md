@@ -27,3 +27,45 @@
 ## 开发者
 [离离沐雪](https://blog.4c43.work)@USTCAT
 千羽律@USTCAT
+
+
+## 错误代码记录
+
+>10:成功完成  
+
+>1001:传入数据不全  
+>1002:登录操作需要重试  
+>1003:文件或数据重名  
+>1004:名称更改被拒绝  
+>1005:数据库记录失败  
+>1006:权限验证错误或未登录  
+>1007:档案不存在  
+
+## 页面小程序码生成方式
+
+访问地址为 `https://neko.4c43.work/wxacode/wxacode.php`
+
+### 参数配置
+
+|参数|说明|数据范围|
+|----|----|----|
+|`scene`|用于为小程序页面打开时传参，对猫的页面来说需要传入id|最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~|
+|`page`|页面路径，根路径不要加 / 例如 pages/index/index|[可选的路径](#可选页面路径列表)|
+|`width`|二维码的宽度，单位 px|默认430，最小 280px，最大 1280px |
+|`auto_color`|自动配置线条颜色|如果颜色依然是黑色，则说明不建议配置主色调，默认 false
+|`line_color`|auto_color 为 false 时生效，使用 rgb 设置颜色|例如 {"r":"xxx","g":"xxx","b":"xxx"} 十进制表示
+|`is_hyaline`|是否需要透明底色|为 true 时，生成透明底色的小程序码，默认 false
+
+#### 可选页面路径列表
+
+|路径|页面说明|传入scene|
+|----|----|----|
+|`pages/cat/cat`|猫的详情页|需要传入scene作为id|
+|`pages/index/index`|主页面||
+|`pages/list/list`|列表页面||
+|`pages/donate/donate`|简单的宣传页||
+|`pages/adopt/adopt`|急需领养的列表页||
+|`pages/science/science`|科普页面||
+|`pages/account/account`|账目公示||
+|`pages/aboutus/aboutus`|关于我们||
+
