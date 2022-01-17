@@ -13,6 +13,7 @@ if($token){
     $sth->execute(array(':token' => $token));
     $redata = $sth->fetch(PDO::FETCH_ASSOC);
     $openid = $redata['openid'];
+    $nickName = $redata['nickName'];
     if($nickName == "微信用户"){
         $redata['needProfile'] = true;
     }
