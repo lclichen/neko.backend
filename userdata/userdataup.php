@@ -38,14 +38,17 @@ curl_close($ch);
 
 $pc = new WXBizDataCrypt($GLOBALS['appId'], $sessionKey);
 $errCode = $pc->decryptData($encryptedData, $iv, $data);
+$redata = array('code'=>10);
 if ($errCode == 0) {
     $data = json_decode($data,true);
     //if (($data['openId'] == $openid) && ($data['watermark']['appid']==$appId)) {
     if ($data['watermark']['appid']==$GLOBALS['appId']) {
         $db = new UserInfoDB($data,$sessionKey,$openid,$isProfile);
         $token = $db->addUserInfo($data,$sessionKey,$openid,$isProfile);
-        echo $token;
+        $redata['token'] = $token;
+        echo json_encode($redata,JSON_UNESCAPED_UNICODE);
     }
 } else {
-    echo $errCode;
+    $redata['code'] = $errCode;
+    echo json_encode($redata,JSON_UNESCAPED_UNICODE);
 }
