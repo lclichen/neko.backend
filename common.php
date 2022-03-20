@@ -154,7 +154,7 @@ function pdo_check_cat_owner($con,$openid,$key){
     $sth->execute(array(':key' => $key));
     $result = $sth->fetch(PDO::FETCH_ASSOC);
     //echo $result['openid'];
-    if($openid == $result['openid'] ){
+    if($openid != '' && $openid == $result['openid'] ){
         return 'o';
     }
     else{
@@ -166,7 +166,7 @@ function pdo_check_image_owner($con,$openid,$key){
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':key' => $key));
     $result = $sth->fetch(PDO::FETCH_ASSOC);
-    if($openid == $result['openid'] ){
+    if($openid != '' && $openid == $result['openid'] ){
         return 'o';
     }
     else{
@@ -178,7 +178,7 @@ function pdo_check_voice_owner($con,$openid,$key){
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':key' => $key));
     $result = $sth->fetch(PDO::FETCH_ASSOC);
-    if($openid == $result['openid'] ){
+    if($openid != '' && $openid == $result['openid'] ){
         return 'o';
     }
     else{

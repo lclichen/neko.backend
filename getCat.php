@@ -59,7 +59,7 @@ if($result = $sth->fetch(PDO::FETCH_ASSOC)){
     $outtext = '[';
     $i = 0;
     foreach($rows_out as $row){
-        if($ctrl == "s" || $openid == $row['openid']){
+        if($openid != '' && ($ctrl == "s" || $openid == $row['openid'])){
             $admin = '1';
         }
         else{
