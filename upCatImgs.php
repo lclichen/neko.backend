@@ -42,14 +42,15 @@ if($matchid === null){//上传图集图片时还没有档案
 else{
     $id=$matchid;
 }
-$sql_select = $con->prepare('SELECT link FROM images WHERE link = ?');
-$sql_select->bindParam(1,$imgname);
-$sql_select->execute();
-$matchlink = $sql_select->fetch(PDO::FETCH_ASSOC)['id'];
-if($matchlink){
-    $con=null;
-    die('{"code":1003,"msg":"同名文件已存在"}');
-}
+//感觉同名概率基本没有，所以先删掉这个判断吧
+// $sql_select = $con->prepare('SELECT link FROM images WHERE link = ?');
+// $sql_select->bindParam(1,$imgname);
+// $sql_select->execute();
+// $matchlink = $sql_select->fetch(PDO::FETCH_ASSOC)['link'];
+// if($matchlink){
+//     $con=null;
+//     die('{"code":1003,"msg":"同名文件已存在"}');
+// }
 
 $hide = 0;
 $sql_insert = $con->prepare('INSERT INTO images (id,link,uploaddate,openid,likeit,hide) VALUES (?, ?, ?, ?, 0, 0)');
