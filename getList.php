@@ -22,23 +22,23 @@ $SCondition = "SELECT id,name,sex,color,TNR,adopt,sch_area,health,rec_count FROM
 if(strlen($status) > 0 && $status != 'all') {
     switch ($status) {
         case 'insc'://在校：健康，未领养
-            $SCondition .= "health = healthy AND adopt != yes AND ";
+            $SCondition .= "health = 'healthy' AND adopt != 'yes' AND ";
             break;
         
         case 'grad'://毕业：已领养
-            $SCondition .= "health = healthy AND adopt = yes AND ";
+            $SCondition .= "health = 'healthy' AND adopt = 'yes' AND ";
             break;
         
         case 'miss'://休学：失踪
-            $SCondition .= "health = missing AND ";
+            $SCondition .= "health = 'missing' AND ";
             break;
         
         case 'dead'://喵星：去世
-            $SCondition .= "health = death AND ";
+            $SCondition .= "health = 'death' AND ";
             break;
 #TODO:猫猫列表
         case 'empty'://不明，需要补完，给管理员单开一个？
-            $SCondition .= "health = empty AND ";
+            $SCondition .= "health = 'empty' AND ";
             break;
         
         default:
