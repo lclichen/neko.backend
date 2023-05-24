@@ -207,5 +207,13 @@ sc_send(
     $toparty = '2',
     $IsJson = true
 );
+sc_send(
+    $title = "更新详情-USTCAT",
+    $text = "$id $name" . $update_info,
+    $type = 'text',
+    $touser = '',
+    $toparty = '2',
+    $IsJson = true
+);
 echo '{"code":10,"msg":"' . $report . '"}';
 $con = null;
