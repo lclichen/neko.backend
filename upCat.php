@@ -97,7 +97,7 @@ $rec_count += (int)$picsum;
 
 if ($sex && $sex != 'empty') {
     update_once($con, "catsinfo", "sex", $sex, "id", $id);
-    $update_info += "\n性别:$sex";
+    $update_info .= "\n性别:$sex";
 }
 if ($health && $health != 'empty') {
     update_once($con, "catsinfo", "health", $health, "id", $id);
@@ -112,14 +112,14 @@ if ($health && $health != 'empty') {
             # code...
             break;
     }
-    $update_info += "\n状态:$health";
+    $update_info .= "\n状态:$health";
 }
 if ($deathdate && $deathdate != '') {
     update_once($con, "catsinfo", "deathdate", $deathdate, "id", $id);
 }
 if ($vac && $vac != 'empty') {
     update_once($con, "catsinfo", "vac", $vac, "id", $id);
-    $update_info += "\n疫苗:$vac";
+    $update_info .= "\n疫苗:$vac";
 }
 if ($vacdate && $vacdate != '') {
     update_once($con, "catsinfo", "vacdate", $vacdate, "id", $id);
@@ -129,14 +129,14 @@ if ($TNR && $TNR != 'empty') {
     if ($TNR == 'cut') {
         $rec_count += 1;
     }
-    $update_info += "\n绝育:$TNR";
+    $update_info .= "\n绝育:$TNR";
 }
 if ($cutdate && $cutdate != '') {
     update_once($con, "catsinfo", "cutdate", $cutdate, "id", $id);
 }
 if ($sch_area && $sch_area != 'empty') {
     update_once($con, "catsinfo", "sch_area", $sch_area, "id", $id);
-    $update_info += "\n校区:$sch_area";
+    $update_info .= "\n校区:$sch_area";
 }
 if ($adopt && $adopt != 'empty') {
     update_once($con, "catsinfo", "adopt", $adopt, "id", $id);
@@ -154,7 +154,7 @@ if ($adopt && $adopt != 'empty') {
             # code...
             break;
     }
-    $update_info += "\n领养:$adopt";
+    $update_info .= "\n领养:$adopt";
 }
 if ($birth_y != "year") {
     if ($birth_m != "month") {
@@ -163,11 +163,11 @@ if ($birth_y != "year") {
         $birthday = $birth_y . "-00-00";
     }
     update_once($con, "catsinfo", "birthday", $birthday, "id", $id);
-    $update_info += "\n生日:$birthday";
+    $update_info .= "\n生日:$birthday";
 }
 if ($description && $description != '') {
     update_once($con, "catsinfo", "description", $description, "id", $id);
-    $update_info += "\n描述:$description";
+    $update_info .= "\n描述:$description";
 }
 if ($secret && $secret != '') {
     update_once($con, "catsinfo", "secret", $secret, "id", $id);
@@ -186,11 +186,11 @@ if ($a_tel && $a_tel != '') {
 }
 if ($color && $color != '') {
     update_once($con, "catsinfo", "color", $color, "id", $id);
-    $update_info += "\n毛色:$color";
+    $update_info .= "\n毛色:$color";
 }
 if ($rec_count != 0) {
     update_once($con, "catsinfo", "rec_count", $rec_count, "id", $id);
-    $update_info += "\n当前排序加权:$rec_count";
+    $update_info .= "\n当前排序加权:$rec_count";
 }
 if ($openid && $openid != '') {
     update_once($con, "catsinfo", "openid", $openid, "id", $id, " AND openid IS NULL");
@@ -209,7 +209,7 @@ sc_send(
 );
 sc_send(
     $title = "更新详情-USTCAT",
-    $text = "$id $name" . $update_info,
+    $text = "$id $name\n" . $update_info,
     $type = 'text',
     $touser = '',
     $toparty = '2',
