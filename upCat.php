@@ -1,6 +1,6 @@
 <?php
 header("content-type:text/html;charset=utf-8");
-include_once(__DIR__ . "/common.php");
+include_once __DIR__ . "/common.php";
 $data = initPostData();
 
 $name = $data['name'];
@@ -41,7 +41,7 @@ fclose($fp);
 // 连接数据库
 $con = pdo_database();
 if ($token) {
-    [$openid, $ctrl, $nickName] = pdo_check_token($con, $token);
+    [$openid, $identity, $nickName] = pdoCheckUserPrivilege($con, $token);
 }
 $report = "";
 // 按名字查找匹配
@@ -51,20 +51,24 @@ $sth->execute(array(':name' => $name));
 $matchid = $sth->fetch(PDO::FETCH_ASSOC)['id'];
 
 
-if ($matchid !== null) { //匹配到id,更新模式,tag应为add
+if ($matchid !== null) {
+    //匹配到id,更新模式,tag应为add
     if ($tag != 'add') { //防同名重复提交。
         $con = null;
         die('{"code":1003,"msg":"请勿提交重复数据"}');
     }
     $id = $matchid;
-} else { //匹配不到id,新增模式,tag应为new
+} else {
+    //匹配不到id,新增模式,tag应为new
     if ($tag != 'new') { //防同名重复提交。
         $con = null;
         die('{"code":1004,"msg":"改名请联系管理员"}');
     }
     $hide = 1; // 控制是否默认隐藏
     $id = $con->query("SELECT MAX(id) FROM catsinfo;")->fetch(PDO::FETCH_ASSOC)['MAX(id)'] + 1;
-    $sql = 'INSERT INTO catsinfo (id, name, color, hide, openid, sex, health, vac, TNR, sch_area ,adopt,description,secret)VALUES ( :id, :name, "emp", :hide, :openid, "empty", "empty", "empty", "empty", "empty", "empty","","")';
+    $sql = 'INSERT INTO catsinfo '.
+    '(id, name, color, hide, openid, sex, health, vac, TNR, sch_area ,adopt,description,secret) '.
+    'VALUES ( :id, :name, "emp", :hide, :openid, "empty", "empty", "empty", "empty", "empty", "empty","","")';
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $result = $sth->execute(array(':id' => $id, ':name' => $name, ':hide' => $hide, ':openid' => $openid));
     if ($result) {
@@ -73,14 +77,19 @@ if ($matchid !== null) { //匹配到id,更新模式,tag应为add
         $con = null;
         die('{"code":1005,"msg":"新增 ' . $id . ' ' . $name . ' 失败！"}');
     }
+
+    $sqlForTableUserpower = 'INSERT INTO userpower (catid,openid,power,auth_by) VALUES (:id, :openid, o, :authby)';
+    $sth = $con->prepare($sqlForTableUserpower, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    $result = $sth->execute(array(':id' => $id, ':openid' => $openid, ':authby' => $openid));
+    // 新增档案的用户，设定授权者为用户本人。
 }
 $rec_count = 0;
 $update_info = '';
 
-if ($openid != '' && $ctrl == 'u') {
-    $ctrl = pdo_check_cat_owner($con, $openid, $name);
+if ($openid != '' && $identity == 'u') {
+    $identity = pdoCheckCatEditPrivilege($con, $openid, $id);
 }
-if (!in_array($ctrl, ["s", "a", "o"], true)) {
+if (!in_array($identity, ["s", "a", "o", "e"], true)) {
     die('{"code":1006,"msg":"无权限，请登录后重试。"}');
 }
 $sql = "SELECT SUM(likeit) FROM images WHERE id = :id";
@@ -195,6 +204,10 @@ if ($rec_count != 0) {
 if ($openid && $openid != '') {
     update_once($con, "catsinfo", "openid", $openid, "id", $id, " AND openid IS NULL");
 }
+
+$sqlEditCount = "UPDATE `userpower` SET edit_count = edit_count+1 WHERE catid = :id AND openid = :openid";
+$stmt = $con->prepare($sqlEditCount);
+$stmt->execute(array(':id' => $id, ':openid' => $openid));
 
 if ($report == "") {
     $report = "已更新 $id $name 的数据";

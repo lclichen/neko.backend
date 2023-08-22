@@ -10,13 +10,14 @@ if($link == ''){
 //连接数据库
 $con = pdo_database();
 if($token){
-    [$openid,$ctrl,$nickName] = pdo_check_token($con,$token);
+    [$openid,$identity,$nickName] = pdoCheckUserPrivilege($con,$token);
 }
-//echo($ctrl);
-if($openid && $ctrl == 'u'){
-    $ctrl = pdo_check_image_owner($con,$openid,$link);
+//echo $identity;
+if($openid && $identity == 'u'){
+    $identity = pdfCheckImageOwner($con,$openid,$link);
 }
-if(($ctrl == 's' || $ctrl == 'o') && strlen($link) > 4 ){
+// 此处仅超级管理员和上传图片的用户本人可以删除，
+if(($identity == 's' || $identity == 'o') && strlen($link) > 4 ){
     $sql = "UPDATE `images` SET hide = 1 WHERE link = :link;";
 }
 else{

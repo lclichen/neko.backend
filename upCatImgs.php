@@ -1,6 +1,6 @@
 <?php
 header("content-type:text/html;charset=utf-8");
-include_once(__DIR__."/common.php");
+include_once __DIR__."/common.php";
 $data = initPostData();
 $postdata = json_encode($data, JSON_UNESCAPED_UNICODE); //获得POST请求提交的数据
 
@@ -29,7 +29,7 @@ fclose($fp);
 
 $con = pdo_database();
 if ($token) {
-    [$openid,$ctrl,$nickName] = pdo_check_token($con, $token);
+    [$openid,$identity,$nickName] = pdoCheckUserPrivilege($con, $token);
 }
 $sql_select = $con->prepare('SELECT id FROM catsinfo WHERE name = ?');
 $sql_select->bindParam(1, $name);
@@ -70,6 +70,6 @@ if (!$result) {
         "text"=>"新的图库图片：\n",
         "CQ_i"=>cat_imgco_link($imgname)
     );
-    qgroup_send($upCatImgsMsg, $group_id=237734741);
+    qgroupSend($upCatImgsMsg, $group_id=237734741);
 }
 $con=null;

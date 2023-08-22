@@ -1,7 +1,7 @@
 <?php
 header("content-type:text/html;charset=utf-8");
 
-include_once(__DIR__."/common.php");
+include_once __DIR__."/common.php";
 $data = initPostData();
 $token = $data['token'];
 $id = (int)$data['id'];
@@ -16,7 +16,7 @@ if($token == ''){
 //连接数据库
 $con = pdo_database();
 if($token){
-    [$openid,$ctrl,$nickName] = pdo_check_token($con,$token);
+    [$openid,$identity,$nickName] = pdoCheckUserPrivilege($con,$token);
 }
 
 // 检查数据库中自己的评分

@@ -1,6 +1,6 @@
 <?php
 header("content-type:text/html;charset=utf-8");
-include_once(__DIR__."/common.php");
+include_once __DIR__."/common.php";
 $data = initPostData();
 $tag = $data['tag'];
 $token = $data['token'];
@@ -13,6 +13,6 @@ if($token == ''){
 /*
 $con = pdo_database();
 if($token){
-    [$openid,$ctrl,$nickName] = pdo_check_token($con,$token);
+    [$openid,$identity,$nickName] = pdoCheckUserPrivilege($con,$token);
 }
 */
