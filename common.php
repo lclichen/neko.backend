@@ -156,25 +156,28 @@ function sc_send($title, $text = '', $type = 'text', $touser = '', $toparty = ''
  * 设定新的用户消息，对messages表进行操作
  * 由系统进行函数调用，暂时不开放给用户
  */
-function setNewMsg($uid, $msg)
+function setNewMsg($con, $openid, $msg)
 {
-    echo "setNewMsg";
+    $sqlNewMsg = "INSERT INTO `messages` (openid,msg) VALUES (:openid, :msg)";
+    $sthNewMsg = $con->prepare($sqlNewMsg, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    return $sthNewMsg->execute(array(':openid' => $openid,':msg' => $msg));
 }
 
 /**
  * 转换用户消息状态为已读，对messages表进行操作
  * 传入用户ID、消息ID、用户Token，在函数内部进行鉴权（？后面看情况决定要不要改到外部鉴权）。
  */
-function readMsg($uid, $msgid, $token)
+function readMsg($con, $openid, $msgid, $token)
 {
     echo "readMsg";
+    update_once($con, "messages", "msg_status", 1, "msgid", $msgid,"");
 }
 
 /**
  * 删除用户消息，对messages表进行操作
  * 传入用户ID、消息ID、用户Token，在函数内部进行鉴权（？后面看情况决定要不要改到外部鉴权）。
  */
-function removeMsg($uid, $msgid, $token)
+function removeMsg($con, $openid, $msgid, $token)
 {
     echo "removeMsg";
 }
@@ -295,14 +298,14 @@ function pdoCheckCatEditPrivilege($con, $openid, $catid)//新的权限检查
     // 捋捋：select catid,openid
     // INSERT INTO userpower (catid,openid) SELECT id,openid FROM catsinfo;
     // 已经执行完毕了。
-    if (is_int($catid)) { // ,auth_period
+    if ((int)$catid) { // ,auth_period
         $sql = "SELECT power FROM `userpower` WHERE catid = :catid AND openid = :openid";
     }
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':catid' => $catid,':openid' => $openid));
     $result = $sth->fetch(PDO::FETCH_ASSOC);
     //echo $result['openid'];
-    if (in_array($result['power'], ['o', 'e'])){ // || $result['auth_period'] > date("Y-m-d h:i:sa")) {
+    if (in_array($result['power'], ["o", "e"], true)){ // || $result['auth_period'] > date("Y-m-d h:i:sa")) {
         return $result['power'];
     } else {
         return 'u';
