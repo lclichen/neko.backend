@@ -7,7 +7,7 @@
 
 ## 硬件设施
 
-使用了Ucloud的免费对象存储，目前服务器位于腾讯云。
+使用了Ucloud的免费对象存储，目前服务器位于阿里云。
 
 ## [前端代码库](https://git.weixin.qq.com/wx_wxf2701f15e3f6197e/nekoustc)
 

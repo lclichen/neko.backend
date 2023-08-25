@@ -78,7 +78,7 @@ if ($matchid !== null) {
         die('{"code":1005,"msg":"新增 ' . $id . ' ' . $name . ' 失败！"}');
     }
 
-    $sqlForTableUserpower = 'INSERT INTO userpower (catid,openid,power,auth_by) VALUES (:id, :openid, o, :authby)';
+    $sqlForTableUserpower = 'INSERT INTO userpower (catid,openid,power,auth_by) VALUES (:id, :openid, "o", :authby)';
     $sth = $con->prepare($sqlForTableUserpower, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $result = $sth->execute(array(':id' => $id, ':openid' => $openid, ':authby' => $openid));
     // 新增档案的用户，设定授权者为用户本人。

@@ -1,6 +1,5 @@
 <?php
 header("content-type:text/html;charset=utf-8");
-//可能需要一些改动以适应无法获取用户信息的状态。解密数据现在是没有必要性的？
 include_once "common.php";
 $data = initPostData();
 $token = $data['token'];
@@ -8,14 +7,13 @@ $token = $data['token'];
 $con = pdo_database();
 
 if ($token) {
-    // 由于微信小程序的改版，此处需要增加一个变量，用于记录用户是否已经填写了个人信息
-    $sql = 'SELECT openid,admin,nickName,pay_name,avatarUrl FROM `userinfo` WHERE login_token = :token';
+    $sql = 'SELECT openid,admin,nickName,pay_name,avatarUrl,needProfile FROM `userinfo` WHERE login_token = :token';
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':token' => $token));
     $redata = $sth->fetch(PDO::FETCH_ASSOC);
     $openid = $redata['openid'];
     $nickName = $redata['nickName'];
-    if ($nickName == "微信用户") {
+    if ($redata['needProfile']) {
         $redata['needProfile'] = true;
     } else {
         $redata['needProfile'] = false;
@@ -38,8 +36,15 @@ if ($openid) {
 
     $rows = $sthGetCats->fetchAll(PDO::FETCH_ASSOC);
 
-    $redata['id'] = $rows;
-    $redata['credit'] = $credit;
+    $sqlGetMsgs = "SELECT msgid,msg,msg_status,msgdate from messages WHERE openid = :openid";
+    $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    $sthGetMsgs->execute(array(':openid' => $openid));
+
+    $usermsgs = $sthGetMsgs->fetchAll(PDO::FETCH_ASSOC);
+
+    $redata['id'] = $rows;// 此外具有编辑权限的猫的列表
+    $redata['credit'] = $credit;// 此为统计得到的战斗力数值（积分）
+    $redata['usermsgs'] = $usermsgs;// 此为用户消息列表
     $redata['code'] = 10;
     echo json_encode($redata, JSON_UNESCAPED_UNICODE);
     $con = null;
