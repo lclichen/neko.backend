@@ -13,7 +13,8 @@ if($token){
     [$openid,$identity,$nickName] = pdoCheckUserPrivilege($con,$token);
 }
 //echo $identity;
-if($openid && $identity == 'u'){
+// 此处需要注意逻辑。
+if($openid && $identity != 's'){
     $identity = pdfCheckImageOwner($con,$openid,$link);
 }
 // 此处仅超级管理员和上传图片的用户本人可以删除，
