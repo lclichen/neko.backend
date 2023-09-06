@@ -25,6 +25,7 @@ if($token){
 else{
     die('{"code":1001,"msg":"Token未传入！"}');
 }
+$redata['openid'] = '';
 //echo($identity);
 if($openid){
     $redata['code'] = 10;
