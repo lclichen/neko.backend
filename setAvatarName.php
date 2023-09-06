@@ -6,7 +6,7 @@ $data = initPostData();
 
 $token = $data['token'];
 $avatarUrl = $data['avatarUrl'];
-$nickName = $data['nickName'];
+$newName = $data['nickName'];
 
 $con = pdo_database();
 $redata = array('code'=>10);
@@ -18,12 +18,15 @@ if ($token) {
 }
 
 if ($openid) {
-    if ($nickName) {
-        update_once($con,"userinfo","nickName",$nickName,"openid",$openid,"");
+    if ($newName) {
+        update_once($con,"userinfo","nickName",$newName,"openid",$openid,"");
     }
     if ($avatarUrl) {
         update_once($con,"userinfo","avatarUrl",$avatarUrl,"openid",$openid,"");
     }
+}
+else {
+    die('{"code":1002,"msg":"登录态已失效"}');
 }
 
 $redata["msg"]="修改成功";
