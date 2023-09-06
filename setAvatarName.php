@@ -1,0 +1,32 @@
+<?php
+header("content-type:text/html;charset=utf-8");
+include_once __DIR__ . "/common.php";
+$data = initPostData();
+//设定头像与昵称，使用自定义鉴权，不再调用wx.login。
+
+$token = $data['token'];
+$avatarUrl = $data['avatarUrl'];
+$nickName = $data['nickName'];
+
+$con = pdo_database();
+$redata = array('code'=>10);
+if ($token == '') {
+    die('{"code":1006,"msg":"请先登录"}');
+}
+if ($token) {
+    [$openid, $identity, $nickName] = pdoCheckUserPrivilege($con, $token);
+}
+
+if ($openid) {
+    if ($nickName) {
+        update_once($con,"userinfo","nickName",$nickName,"openid",$openid,"");
+    }
+    if ($avatarUrl) {
+        update_once($con,"userinfo","avatarUrl",$avatarUrl,"openid",$openid,"");
+    }
+}
+
+$redata["msg"]="修改成功";
+echo json_encode($redata,JSON_UNESCAPED_UNICODE);
+$con = null;
+// 不包含敏感信息，不再需要进行数据解密。

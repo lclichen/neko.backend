@@ -6,9 +6,7 @@
  * @copyright Copyright (c) 1998-2014 Tencent Inc.
  */
 
-
 include_once "errorCode.php";
-
 
 class WXBizDataCrypt
 {
