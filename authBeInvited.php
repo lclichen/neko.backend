@@ -15,7 +15,7 @@ if ($openid && $identity == 'u') {
     $identity = pdoCheckCatEditPrivilege($con, $openid, $id);
 }
 
-$ntime = date("Y-m-d h:i:sa");
+$ntime = date("Y-m-d H:i:s");
 
 $sth = $con->prepare("SELECT * FROM invitepower WHERE secret_checksum = :seccs");
 $sth->execute(array(':seccs' => $seccs));

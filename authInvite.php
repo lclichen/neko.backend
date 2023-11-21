@@ -19,8 +19,8 @@ if ($openid && $identity == 'u') {
 $redata = array();
 if ($identity == 'a' || $identity == 'o' || $identity == 's') {
     $sth = $con->prepare("INSERT INTO invitepower (catid,inviter_openid,invite_create_time,invite_period_time,times_left,secret_checksum) VALUES (:catid,:openid,:ntime,:ptime,:times_left,:seccs)");
-    $ntime = date("Y-m-d h:i:sa");
-    $ptime = date("Y-m-d h:i:sa", strtotime("+$period_days day"));
+    $ntime = date("Y-m-d H:i:s");
+    $ptime = date("Y-m-d H:i:s", strtotime("+$period_days day"));
     $seccs = md5($openid.$ntime.$catid);
     $result = $sth->execute(array(':catid'=>$catid,':openid' => $openid,':ntime'=>$ntime,':ptime'=>$ptime,'times_left'=>$times_left,':seccs'=>$seccs));
     if($result){
