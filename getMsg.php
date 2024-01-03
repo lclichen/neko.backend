@@ -49,7 +49,7 @@ if ($openid) {
     $sqlGetMsgs .= " ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
     $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sthGetMsgs->execute(array(':openid' => $openid));
-    $msgs = $sthGetMsgs->fetch(PDO::FETCH_ASSOC);
+    $msgs = $sthGetMsgs->fetchAll(PDO::FETCH_ASSOC);
     $result = array();
     $result['code'] = 10;
     $result['msgs'] = $msgs;
