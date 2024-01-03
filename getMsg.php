@@ -20,43 +20,36 @@ if ($token) {
 // 还得有一个切换已读/未读的按钮
 if ($openid) {
     $poffset = $page*$pagesize;
+    $sqlGetMsgs = "SELECT msgid,msg_status,toadmin,msg_with_user,msg_with_cat,msgdate,msg from messages WHERE ";
     if ($read_class = 'all') {
         if ($identity == 's') {
-            $sqlGetMsgs = "SELECT * from messages WHERE openid = :openid OR (toadmin = 1 OR toadmin = 2) ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "openid = :openid OR (toadmin = 1 OR toadmin = 2)";
         } elseif ($identity == 'a') {
-            $sqlGetMsgs = "SELECT * from messages WHERE openid = :openid OR toadmin = 1 ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "openid = :openid OR toadmin = 1";
         } else {
-            $sqlGetMsgs = "SELECT * from messages WHERE openid = :openid ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "openid = :openid";
         }
-    
-        $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sthGetMsgs->execute(array(':openid' => $openid));
-        $msgs = $sthGetMsgs->fetch(PDO::FETCH_ASSOC);
     } elseif ($read_class = 'marked') {
         if ($identity == 's') {
-            $sqlGetMsgs = "SELECT * from messages WHERE (openid = :openid AND msg_status = 1) OR ((msg_status=3 OR msg_status=4) AND (toadmin = 1 OR toadmin = 2)) ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "(openid = :openid AND msg_status = 1) OR ((msg_status=3 OR msg_status=4) AND (toadmin = 1 OR toadmin = 2))";
         } elseif ($identity == 'a') {
-            $sqlGetMsgs = "SELECT * from messages WHERE (openid = :openid AND msg_status = 1) OR ((msg_status=3 OR msg_status=4) AND toadmin = 1) ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "(openid = :openid AND msg_status = 1) OR ((msg_status=3 OR msg_status=4) AND toadmin = 1)";
         } else {
-            $sqlGetMsgs = "SELECT * from messages WHERE openid = :openid AND msg_status = 1 ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "openid = :openid AND msg_status = 1";
         }
-    
-        $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sthGetMsgs->execute(array(':openid' => $openid));
-        $msgs = $sthGetMsgs->fetch(PDO::FETCH_ASSOC);
     } elseif ($read_class = 'tomark') {
         if ($identity == 's') {
-            $sqlGetMsgs = "SELECT * from messages WHERE (openid = :openid AND msg_status = 0) OR (msg_status=2 AND (toadmin = 1 OR toadmin = 2)) ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "(openid = :openid AND msg_status = 0) OR (msg_status=2 AND (toadmin = 1 OR toadmin = 2))";
         } elseif ($identity == 'a') {
-            $sqlGetMsgs = "SELECT * from messages WHERE (openid = :openid AND msg_status = 0) OR (msg_status=2 AND toadmin = 1) ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "(openid = :openid AND msg_status = 0) OR (msg_status=2 AND toadmin = 1)";
         } else {
-            $sqlGetMsgs = "SELECT * from messages WHERE openid = :openid AND msg_status = 0 ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+            $sqlGetMsgs .= "openid = :openid AND msg_status = 0";
         }
-    
-        $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sthGetMsgs->execute(array(':openid' => $openid));
-        $msgs = $sthGetMsgs->fetch(PDO::FETCH_ASSOC);
     }
+    $sqlGetMsgs .= " ORDER BY `msgdate` DESC LIMIT $poffset,$pagesize;";
+    $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    $sthGetMsgs->execute(array(':openid' => $openid));
+    $msgs = $sthGetMsgs->fetch(PDO::FETCH_ASSOC);
     $result = array();
     $result['code'] = 10;
     $result['msgs'] = $msgs;
