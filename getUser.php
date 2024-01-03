@@ -36,15 +36,25 @@ if ($openid) {
 
     $rows = $sthGetCats->fetchAll(PDO::FETCH_ASSOC);
 
-    $sqlGetMsgs = "SELECT msgid,msg,msg_status,msgdate from messages WHERE openid = :openid";
+    if ($redata['admin'] == 's'){
+        $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE (openid = :openid AND msg_status = 0) OR (msg_status=2 AND (toadmin = 1 OR toadmin = 2))";
+    }
+    elseif ($redata['admin'] == 'a'){
+        $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE (openid = :openid AND msg_status = 0) OR (msg_status=2 AND toadmin = 1)";
+    }
+    else{
+        $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE openid = :openid AND msg_status = 0";
+    }
+    // $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE openid = :openid AND msg_status = 0";
+    // 计数当前用户的未读消息
     $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sthGetMsgs->execute(array(':openid' => $openid));
 
-    $usermsgs = $sthGetMsgs->fetchAll(PDO::FETCH_ASSOC);
+    $msgs_count = $sthGetMsgs->fetch(PDO::FETCH_ASSOC)['COUNT(*)'];
 
     $redata['id'] = $rows;// 此外具有编辑权限的猫的列表
     $redata['credit'] = $credit;// 此为统计得到的战斗力数值（积分）
-    $redata['usermsgs'] = $usermsgs;// 此为用户消息列表
+    $redata['msgs_count'] = $msgs_count;
     $redata['code'] = 10;
     echo json_encode($redata, JSON_UNESCAPED_UNICODE);
     $con = null;
