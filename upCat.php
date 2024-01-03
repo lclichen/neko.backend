@@ -34,7 +34,7 @@ if ($token == '') {
 $postdata = json_encode($data, JSON_UNESCAPED_UNICODE); //获得POST请求提交的数据
 //打印日志 方便查看
 $fp = fopen(__DIR__ . '/.log/log.txt', 'a+') or die('{"code":1002,"msg":"无法写入log文件"}');
-$D_T = date("Y-m-d h:i:sa");
+$D_T = date("Y-m-d H:i:s");
 fwrite($fp, $D_T . "\n");
 fwrite($fp, $postdata . "\n");
 fclose($fp);
@@ -97,7 +97,7 @@ $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 $sth->execute(array(':id' => $id));
 $likesum = $sth->fetch(PDO::FETCH_ASSOC)['SUM(likeit)'];
 $rec_count += (int)($likesum/20);
-$Diff_T = date("Y-m-d h:i:sa", strtotime("-7 day"));
+$Diff_T = date("Y-m-d H:i:s", strtotime("-7 day"));
 $sql = "SELECT COUNT(link) FROM images WHERE id = :id AND uploaddate > " . $Diff_T;
 $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 $sth->execute(array(':id' => $id));

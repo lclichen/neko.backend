@@ -14,6 +14,7 @@ $adopt = $data['adopt']; //empty/yes/no
 $color = $data['color'];
 $status = $data['status']; //all/insc在校/grad毕业/miss休学/dead喵星
 $page = (int)$data['page'];
+$sorting_type = $data['sorting'];
 $pagesize = 30;// = (int)$data['pagesize'];
 if (!$page) {
     $page=0;
@@ -84,7 +85,21 @@ if (strlen($keyword) > 0) { #根据关键词进行筛选
     $arr[':keyword'] = '%' . "$keyword" . '%';
 }
 $poffset = $page*$pagesize;
-$SCondition .= "hide = 0 ORDER BY `rec_count` DESC,`id` DESC LIMIT $poffset,$pagesize;";
+
+switch ($sorting_type) {
+    case 'iddesc':
+        // 降序
+        $SCondition .= "hide = 0 ORDER BY `id` DESC LIMIT $poffset,$pagesize;";
+        break;
+    case 'idasc':
+        // 升序
+        $SCondition .= "hide = 0 ORDER BY `id` ASC LIMIT $poffset,$pagesize;";
+        break;
+    default:
+        $SCondition .= "hide = 0 ORDER BY `rec_count` DESC,`id` DESC LIMIT $poffset,$pagesize;";
+        break;
+}
+// $SCondition .= "hide = 0 ORDER BY `rec_count` DESC,`id` DESC LIMIT $poffset,$pagesize;";
 
 $sth = $con->prepare($SCondition, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 $sth->execute($arr);
