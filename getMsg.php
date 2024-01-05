@@ -52,7 +52,7 @@ if ($openid) {
             $sqlGetMsgs .= "openid = :openid AND (msg_status=0 OR msg_status=2)";
         }
     }
-    $sqlGetMsgs .= " ORDER BY `msgid` ASC LIMIT $poffset,$pagesize;";
+    $sqlGetMsgs .= " ORDER BY `msgid` DESC LIMIT $poffset,$pagesize;";
     $sthGetMsgs = $con->prepare($sqlGetMsgs, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sthGetMsgs->execute(array(':openid' => $openid));
     $msgs = $sthGetMsgs->fetchAll(PDO::FETCH_ASSOC);

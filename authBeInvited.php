@@ -7,7 +7,7 @@ $seccs = $data['scene'];
 
 $con = pdo_database();
 if ($token) {
-    [$openid, $identity, $nickName] = pdoCheckUserPrivilege($con, $token);
+    [$openid, $identity, $nickName, $uid] = pdoCheckUserPrivilege($con, $token, true);
     //var_dump([$token,$openid,$identity,$nickName]);
 }
 
@@ -31,11 +31,16 @@ if($resu){
         }
     } else {
         $con->prepare("DELETE FROM invitepower WHERE secret_checksum = :seccs")->execute(array(':seccs' => $seccs));
+        $con = null;
+        die('{"code":1005,"msg":"邀请码已失效！"}');
     }
     if($result){
         $redata['code'] = 10;
     }
     echo json_encode($redata, JSON_UNESCAPED_UNICODE);
+    // 邀请成功的消息
+    setNewMsg($con, $resu['inviter_openid'], 5, 0, $uid, $resu['catid'],
+    '{"content":"template_4"}');
     $con = null;
 }else{
     $con = null;
