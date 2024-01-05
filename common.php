@@ -156,30 +156,13 @@ function sc_send($title, $text = '', $type = 'text', $touser = '', $toparty = ''
  * 设定新的用户消息，对messages表进行操作
  * 由系统进行函数调用，暂时不开放给用户
  */
-function setNewMsg($con, $openid, $msg)
+function setNewMsg($con, $openid, $msg_status, $toadmin, $msg_with_user, $msg_with_cat, $msg)
 {
-    $sqlNewMsg = "INSERT INTO `messages` (openid,msg) VALUES (:openid, :msg)";
+    // `msgid`,`openid`,`msg_status`,`toadmin`,`msg_with_user`,`msg_with_cat`,`msgdate`,`msg`
+// `catid`,`inviter_openid`,`invite_create_time`,`invite_period_time`,`times_left`,`secret_checksum`
+    $sqlNewMsg = "INSERT INTO `messages` (openid,msg_status,toadmin,msg_with_user,msg_with_cat,msg) VALUES (:openid, :msg_status, :toadmin, :msg_with_user, :msg_with_cat, :msg)";
     $sthNewMsg = $con->prepare($sqlNewMsg, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-    return $sthNewMsg->execute(array(':openid' => $openid,':msg' => $msg));
-}
-
-/**
- * 转换用户消息状态为已读，对messages表进行操作
- * 传入用户ID、消息ID、用户Token，在函数内部进行鉴权（？后面看情况决定要不要改到外部鉴权）。
- */
-function readMsg($con, $openid, $msgid, $token)
-{
-    echo "readMsg";
-    update_once($con, "messages", "msg_status", 1, "msgid", $msgid,"");
-}
-
-/**
- * 删除用户消息，对messages表进行操作
- * 传入用户ID、消息ID、用户Token，在函数内部进行鉴权（？后面看情况决定要不要改到外部鉴权）。
- */
-function removeMsg($con, $openid, $msgid, $token)
-{
-    echo "removeMsg";
+    return $sthNewMsg->execute(array(':openid' => $openid, ':msg_status' => $msg_status, ':toadmin' => $toadmin, ':msg_with_user' => $msg_with_user, ':msg_with_cat' => $msg_with_cat, ':msg' => $msg));
 }
 
 function cat_imgco_link($link)
@@ -262,13 +245,17 @@ function pdo_database()
  * 2.其他操作，比如仅限管理员进行的操作，就直接往后进行了。
  * 3.对userpower表的操作，userpower表主要针对的也是档案本身。因此和1类似
  */
-function pdoCheckUserPrivilege($con, $token)
+function pdoCheckUserPrivilege($con, $token, $require_id = false)
 {
-    $sql = 'SELECT openid,admin,nickName FROM `userinfo` WHERE login_token = :token';
+    $sql = 'SELECT ID,openid,admin,nickName FROM `userinfo` WHERE login_token = :token';
     $sth = $con->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $sth->execute(array(':token' => $token));
     $result = $sth->fetch(PDO::FETCH_ASSOC);
-    return [$result['openid'], $result['admin'], $result['nickName']];
+    if ($require_id){
+        return [$result['openid'], $result['admin'], $result['nickName'], $result['ID']];
+    } else {
+        return [$result['openid'], $result['admin'], $result['nickName']];
+    }
 }
 
 /**

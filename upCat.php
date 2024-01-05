@@ -41,7 +41,7 @@ fclose($fp);
 // 连接数据库
 $con = pdo_database();
 if ($token) {
-    [$openid, $identity, $nickName] = pdoCheckUserPrivilege($con, $token);
+    [$openid, $identity, $nickName, $uid] = pdoCheckUserPrivilege($con, $token, true);
 }
 $report = "";
 // 按名字查找匹配
@@ -78,6 +78,8 @@ if ($matchid !== null) {
         die('{"code":1005,"msg":"新增 ' . $id . ' ' . $name . ' 失败！"}');
     }
 
+    setNewMsg($con, $openid, 2, 1, $uid,$id,
+    '{"content":"template_3"}');
     $sqlForTableUserpower = 'INSERT INTO userpower (catid,openid,power,auth_by) VALUES (:id, :openid, "o", :authby)';
     $sth = $con->prepare($sqlForTableUserpower, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
     $result = $sth->execute(array(':id' => $id, ':openid' => $openid, ':authby' => $openid));

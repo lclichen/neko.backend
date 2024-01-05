@@ -54,15 +54,25 @@ if ($openid) {
                 $con = null;
                 die('{"code":1001,"msg":"Msg更新失败"}');
             }
-            $sqlSelect = "SELECT msg,msg_with_user,msg_with_cat FROM messages WHERE msgid=:msgid";
+            $sqlSelect = "SELECT openid,msg,msg_with_user,msg_with_cat FROM messages WHERE msgid=:msgid";
             $sth = $con->prepare($sqlSelect);
             $sth->execute(array(':msgid' => $msgid));
             $resp = $sth->fetch(PDO::FETCH_ASSOC);
             $content = json_decode($resp['msg'])['content'];
             if ($content == "template_3") {
-                $result_2 = update_once($con,"catsinfo","hide",0,"id",$resp['msg_with_cat']);
+                if ($re_status == 0){
+                    // 拒绝
+                    $result_2 = true;
+                    setNewMsg($con, $resp['openid'], 0, 0, $resp['msg_with_user'], $resp['msg_with_cat'],
+                    '{"content":"template_1"}');
+                } elseif ($re_status == 1) {
+                    $result_2 = update_once($con,"catsinfo","hide",0,"id",$resp['msg_with_cat']);
+                    // 通过
+                    setNewMsg($con, $resp['openid'], 0, 0, $resp['msg_with_user'], $resp['msg_with_cat'],
+                    '{"content":"template_0"}');
+                }
             }
-            if ($result_1 && $result_2) {
+            if ($result_2) {
                 $redata["msg"]="审核成功";
             }
             break;
