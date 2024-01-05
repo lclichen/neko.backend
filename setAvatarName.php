@@ -20,6 +20,7 @@ if ($token) {
 if ($openid) {
     if ($newName) {
         update_once($con,"userinfo","nickName",$newName,"openid",$openid,"");
+        update_once($con,"userinfo","needProfile","0","openid",$openid,"");
     }
     if ($avatarUrl) {
         update_once($con,"userinfo","avatarUrl",$avatarUrl,"openid",$openid,"");
