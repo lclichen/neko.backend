@@ -20,7 +20,7 @@ if ($token) {
 
 if ($openid) {
     switch ($msg_status) {
-        case 0:
+        case '0':
             // 这个简单一些，直接匹配openid和msgid即可。
             // 交互仅限于标记为已读或者从已读转换为未读？
             $sqlQuery = "UPDATE messages SET msg_status = 1 WHERE openid = :openid AND msgid = :msgid AND msg_status=0";
@@ -28,7 +28,7 @@ if ($openid) {
             $stmt->execute(array(':openid' => $openid, ':msgid' => $msgid));
             $redata["msg"]="修改成功";
             break;
-        case 2:
+        case '2':
             // 只对msg_status=2的进行操作
             if ($re_status == 0){
                 $sta = 3;
@@ -39,16 +39,16 @@ if ($openid) {
                 die('{"code":1001,"msg":"缺少输入参数"}');
             }
             if ($identity == 's') {
-                $sqlQuery = "UPDATE messages SET msg_status=:sta WHERE toadmin!=0 AND msg_status=2 AND openid= :openid AND msgid= :msgid";
+                $sqlQuery = "UPDATE messages SET msg_status=:sta WHERE msgid= :msgid AND msg_status=2";
             } elseif ($identity == 'a'){
-                $sqlQuery = "UPDATE messages SET msg_status=:sta WHERE toadmin=1 AND msg_status=2 AND openid= :openid AND msgid= :msgid";
+                $sqlQuery = "UPDATE messages SET msg_status=:sta WHERE msgid= :msgid AND msg_status=2";
             }
             else {
                 $con = null;
                 die('{"code":1001,"msg":"输入参数错误"}');
             }
             $stmt = $con->prepare($sqlQuery);
-            $result_1 = $stmt->execute(array(':sta' => $sta, ':openid' => $openid, ':msgid' => $msgid));
+            $result_1 = $stmt->execute(array(':sta' => $sta, ':msgid' => $msgid));
             // 根据消息内容（？）对对应的档案或用户进行处理，比如显示档案或授权用户权限(或许应该在)
             if (!$result_1) {
                 $con = null;
