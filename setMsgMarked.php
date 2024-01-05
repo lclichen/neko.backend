@@ -58,7 +58,7 @@ if ($openid) {
             $sth = $con->prepare($sqlSelect);
             $sth->execute(array(':msgid' => $msgid));
             $resp = $sth->fetch(PDO::FETCH_ASSOC);
-            $content = json_decode($resp['msg'])['content'];
+            $content = json_decode($resp['msg'])->content;
             if ($content == "template_3") {
                 if ($re_status == 0){
                     // 拒绝
@@ -71,9 +71,13 @@ if ($openid) {
                     setNewMsg($con, $resp['openid'], 0, 0, $resp['msg_with_user'], $resp['msg_with_cat'],
                     '{"content":"template_0"}');
                 }
+            } else {
+                $result_2 = false;
             }
             if ($result_2) {
                 $redata["msg"]="审核成功";
+            } else {
+                $redata["msg"]="此类消息审核系统尚未完成";
             }
             break;
         default:
