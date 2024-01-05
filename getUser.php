@@ -37,7 +37,7 @@ if ($openid) {
     $rows = $sthGetCats->fetchAll(PDO::FETCH_ASSOC);
 
     if ($redata['admin'] == 's'){
-        $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE (openid = :openid AND (msg_status=0 OR msg_status=2)) OR (toadmin!=0 AND msg_status=2))";
+        $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE (openid = :openid AND (msg_status=0 OR msg_status=2)) OR (toadmin!=0 AND msg_status=2)";
     }
     elseif ($redata['admin'] == 'a'){
         $sqlGetMsgs = "SELECT COUNT(*) from messages WHERE (openid = :openid AND (msg_status=0 OR msg_status=2)) OR (toadmin=1 AND msg_status=2)";
