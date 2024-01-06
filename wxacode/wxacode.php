@@ -48,9 +48,13 @@ $Is_hyaline = boolval($data['is_hyaline']); //false //是否需要透明底色�
 $filename = __DIR__."/acode/".urlencode("$Page-$Scene-$Width-$Line_color");
 if($Auto_color){
     $filename .= '1';
+} else {
+    $filename .= '0';
 }
 if($Is_hyaline){
     $filename .= '1';
+} else {
+    $filename .= '0';
 }
 $filename .= '.jpg';
 if(is_file($filename)){

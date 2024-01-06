@@ -3,8 +3,6 @@
 ## 此处为中国科学技术大学“科大猫咪相簿”小程序[后端代码库](https://git.ustc.edu.cn/ustcat/neko.backend)。
 <img width="100" height="100" alt="小程序码" src="https://git.ustc.edu.cn/ustcat/nekoustc/-/raw/master/wxacode.jpg"/>
 
-重构科大猫咪相簿后端，并尝试采取Git方式向服务器同步，总体来看对开发过程有很大的改善。Git天下第一！
-
 ## 硬件设施
 
 使用了Ucloud的免费对象存储，目前服务器位于阿里云。
@@ -14,7 +12,9 @@
 
 ## 参考说明
 
-小程序中科普部分参考了PKU的[燕园猫手册小程序](https://github.com/circlelq/miniprogram)中的科普内容。
+<del>小程序中科普部分参考了PKU的[燕园猫手册小程序](https://github.com/circlelq/miniprogram)中的科普内容。</del>
+
+由于微信认为科普内容是信息资讯，个人小程序无资质，因此删除了小程序内的科普页面。
 
 界面中各类元素使用了[WEUI](https://developers.weixin.qq.com/miniprogram/dev/extended/weui/)，借助[Lin-UI](https://doc.mini.talelin.com/)进行了重构。
 
@@ -65,7 +65,6 @@
 |`pages/list/list`|列表页面||
 |`pages/donate/donate`|简单的宣传页||
 |`pages/adopt/adopt`|急需领养的列表页||
-|`pages/science/science`|科普页面||
 |`pages/account/account`|账目公示||
 |`pages/aboutus/aboutus`|关于我们||
 
