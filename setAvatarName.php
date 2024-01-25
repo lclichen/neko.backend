@@ -7,7 +7,9 @@ $data = initPostData();
 $token = $data['token'];
 $avatarUrl = $data['avatarUrl'];
 $newName = $data['nickName'];
-
+if ($newName == "" || is_null($newName) || $newName == "undefined"){
+    die('{"code":1002,"msg":"请勿传入空值"}');
+}
 $con = pdo_database();
 $redata = array('code'=>10);
 if ($token == '') {
