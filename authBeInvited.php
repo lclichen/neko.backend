@@ -9,6 +9,9 @@ $con = pdo_database();
 if ($token) {
     [$openid, $identity, $nickName, $uid] = pdoCheckUserPrivilege($con, $token, true);
     //var_dump([$token,$openid,$identity,$nickName]);
+} else {
+    $con = null;
+    die('{"code":1002,"msg":"请登录后重试"}');
 }
 
 if ($openid && $identity == 'u') {
@@ -22,7 +25,7 @@ $sth->execute(array(':seccs' => $seccs));
 $resu = $sth->fetch(PDO::FETCH_ASSOC);
 if($resu){
     if ($resu['invite_period_time']>$ntime && $resu['times_left'] > 0) {
-        $sthi = $con->prepare('INSERT INTO userpower (catid,openid,power,auth_by) VALUES (:id, :openid, "e", :authby)', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sthi = $con->prepare('INSERT IGNORE INTO userpower (catid,openid,power,auth_by) VALUES (:id, :openid, "e", :authby)', array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $result = $sthi->execute(array(':id' => $resu['catid'], ':openid' => $openid, ':authby' => $resu['inviter_openid']));
         if($resu['times_left']>1){
             $con->prepare("UPDATE invitepower SET times_left = times_left - 1 WHERE secret_checksum = :seccs ")->execute(array(':seccs' => $seccs));
